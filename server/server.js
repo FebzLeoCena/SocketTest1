@@ -1,20 +1,27 @@
+import express from "express";
+import { createServer } from "http";
+import { Server } from "socket.io";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
-import express from "express";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
 const publicPath = join(__dirname, "../public");
 
 const app = express();
-
-// Serve files from the public directory
 app.use(express.static(publicPath));
 
-app.listen(3000, () => {
-  console.log("server listening on 3000");
+const httpServer = createServer(app);
+const io = new Server(httpServer);
+
+io.on("connection", (socket) => {
+  console.log("New client connected");
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
 });
 
-console.log(publicPath);
-console.log(__dirname + "/../public");
+const PORT = process.env.PORT || 3000;
+httpServer.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

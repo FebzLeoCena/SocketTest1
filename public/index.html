@@ -7,5 +7,16 @@
   </head>
   <body>
     <h1>Socket App</h1>
+    <!-- making connection with backend ,this path included all the features of socket io-->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io(); // This initializes the client-side socket
+      socket.on("connect", () => {
+        console.log("connected to server"); // on server side also we can able to connect using io.on & but it reflects in broweser console
+      });
+      socket.on("disconnect", () => {
+        console.log("disconnected from server"); // on server side also we can able to connect using io.on & but it reflects in broweser
+      });
+    </script>
   </body>
 </html>
